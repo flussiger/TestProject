@@ -2,6 +2,7 @@
 
 class Storm {
 public:
+    Storm(); // Default constructor
     Storm(const std::string& name, double speed, const std::string& direction);
     void print() const;
     void displayStorm() const;

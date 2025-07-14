@@ -2,6 +2,7 @@
 
 class Weather {
 public:
+    Weather(); // Default constructor
     Weather(const std::string& city, double temp);
     void print() const;
     void displayWeather() const;

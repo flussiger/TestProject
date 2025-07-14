@@ -1,6 +1,8 @@
 #include "Weather.h"
 #include <iostream>
 
+Weather::Weather() : city_(""), temp_(0.0) {} //default constructor
+
 Weather::Weather(const std::string& city, double temp)
     : city_(city), temp_(temp) {}
 
