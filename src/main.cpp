@@ -27,7 +27,7 @@ int main() {
     printMenu();
     std::cin >> choice;
 
-    std::cout << "DEBUG: You selected option: " << choice << std::endl;
+    std::cout << "DEBUG: You selected the following option: " << choice << std::endl;
 
     return 0;
 }
