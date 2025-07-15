@@ -12,3 +12,7 @@ void Weather::print() const {
 void Weather::displayWeather() const {
     std::cout << "Aktuelles Wetter in " << city_ << ": " << temp_ << "°C\n";
 }
+
+void Weather::display() const {
+    std::cout << "Weather in " << city_ << ": " << temp_ << "°C\n";
+}

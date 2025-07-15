@@ -1,9 +1,12 @@
+#include "Event.h"
+
 #include <string>
 
-class Storm {
+class Storm : public Event {
 public:
     Storm(); // Default constructor
     Storm(const std::string& name, double speed, const std::string& direction);
+    void display() const override;
     void print() const;
     void displayStorm() const;
     std::string getName() const { return name_; }

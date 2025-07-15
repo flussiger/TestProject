@@ -2,6 +2,7 @@
 #include <vector>
 #include "Weather.h"
 #include "storm.h"
+#include "Event.h"
 
 void displayWeatherInfo(const Weather& weather) {
     weather.displayWeather();
@@ -11,6 +12,11 @@ void displayWeatherInfo(const Weather& weather) {
 void displayStormInfo(const Storm& storm) {
     storm.displayStorm();
     std::cout << "\n\n\n";
+}
+
+void displayPolyMorph()
+{
+
 }
 
 
@@ -28,6 +34,7 @@ void printMenu() {
     std::cout << "2. Create Storm instance" << std::endl;
     std::cout << "3. Display Weather information" << std::endl;
     std::cout << "4. Display Storm information" << std::endl;
+    std::cout << "6. Display Polymorphically" << std::endl;
     std::cout << "5. Exit" << std::endl;
 }
 
@@ -63,12 +70,17 @@ int main() {
     printWelcomeMessage();
     Weather weather;
     std::vector<Storm> storms;
-    std::vector<Weather> weathers; 
+    std::vector<Weather> weathers;
+    std::vector<Event*> events;
+    Weather w("Vienna", 23.5);
+    Storm s("Hurricane", 120.0, "North-East");
+    events.push_back(&w);
+    events.push_back(&s);
     int choice = 0;
     while (true) {
         printMenu();
         std::cout << " > ";
-        if (scanf("%d", &choice) == 1 && choice >= 1 && choice <= 5) {
+        if (scanf("%d", &choice) == 1 && choice >= 1 && choice <= 6) {
             if (choice == 1) {
                 Weather newWeather;
                 createWeatherInstance(newWeather);
@@ -98,6 +110,15 @@ int main() {
                     }
                 }
             }
+
+            else if (choice == 6)
+            {
+                for (const auto* e : events) 
+                {
+                    e->display(); // Calls the correct display() for Weather or Storm
+                }    
+            }
+
             else if (choice == 5) {
                 std::cout << "Exiting the program. Goodbye!" << std::endl;
                 break;

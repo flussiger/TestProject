@@ -16,3 +16,7 @@ void Storm::displayStorm() const {
     std::cout << "Aktueller Sturm: " << name_ << " Geschwindigkeit: " << 
         speed_ << "km/h. Richtung: " << direction_ << std::endl;
 }
+
+void Storm::display() const {
+    std::cout << "Storm: " << name_ << ", Speed: " << speed_ << " km/h, Direction: " << direction_ << "\n";
+}
