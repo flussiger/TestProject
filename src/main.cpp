@@ -1,13 +1,16 @@
 #include <iostream>
+#include <vector>
 #include "Weather.h"
 #include "storm.h"
 
 void displayWeatherInfo(const Weather& weather) {
     weather.displayWeather();
+    std::cout << "\n\n\n";
 }
 
 void displayStormInfo(const Storm& storm) {
     storm.displayStorm();
+    std::cout << "\n\n\n";
 }
 
 
@@ -30,6 +33,7 @@ void printMenu() {
 
 void createWeatherInstance(Weather& weather)
 {
+    std::cout << "---- Creating Weather Instance ------:" << std::endl;
     std::string city;
     double temperature;
     std::cout << "Enter city name: ";
@@ -37,11 +41,11 @@ void createWeatherInstance(Weather& weather)
     std::cout << "Enter temperature in Celsius: ";
     std::cin >> temperature;
     weather = Weather(city, temperature);
-
-    displayWeatherInfo(weather);
+    std::cout << "\n\n";
 }
 
-void createStormInstance(Storm& storm){
+void createStormInstance(Storm& storm) {
+    std::cout << "---- Creating Storm Instance ------:" << std::endl;
     std::string stormName, direction;
     double speed;
     std::cout << "Enter a name for the storm:";
@@ -51,44 +55,55 @@ void createStormInstance(Storm& storm){
     std::cout << "Enter storm direction: ";
     std::cin >> direction;
     storm = Storm(stormName, speed, direction);
-
-    displayStormInfo(storm);
+    std::cout << "\n\n";
 }
 
 
 int main() {
     printWelcomeMessage();
     Weather weather;
-    Storm storm;
+    std::vector<Storm> storms;
+    std::vector<Weather> weathers; 
     int choice = 0;
-    printMenu();
     while (true) {
+        printMenu();
         std::cout << " > ";
         if (scanf("%d", &choice) == 1 && choice >= 1 && choice <= 5) {
-            if (choice == 1)
-            {
-                createWeatherInstance(weather);
+            if (choice == 1) {
+                Weather newWeather;
+                createWeatherInstance(newWeather);
+                weathers.push_back(newWeather);
             }
-            else if (choice == 2)
-            {
-                createStormInstance(storm);
+            else if (choice == 2) {
+                Storm newStorm;
+                createStormInstance(newStorm);
+                storms.push_back(newStorm);
             }
-            else if (choice == 3)
-            {
-                displayWeatherInfo(weather);
+            else if (choice == 3) {
+                if (weathers.empty())
+                {
+                    std::cout << "No weather instances created yet.\n";
+                } else {
+                    for (const auto& w : weathers) {
+                        displayWeatherInfo(w);
+                    }
+                }
             }
-            else if (choice == 4)
-            {
-                displayStormInfo(storm);
+            else if (choice == 4) {
+                if (storms.empty()) {
+                    std::cout << "No storms created yet.\n";
+                } else {
+                    for (const auto& s : storms) {
+                        displayStormInfo(s);
+                    }
+                }
             }
-            else if (choice == 5)
-            {
+            else if (choice == 5) {
                 std::cout << "Exiting the program. Goodbye!" << std::endl;
                 break;
             }
         } else {
             std::cout << "Invalid input. Please enter a number between 1 and 5.\n";
-            // Clear the input buffer
             int c;
             while ((c = getchar()) != '\n' && c != EOF) {}
         }
