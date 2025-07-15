@@ -3,6 +3,7 @@
 #include "Weather.h"
 #include "storm.h"
 #include "Event.h"
+#include <curl/curl.h>
 
 void displayWeatherInfo(const Weather& weather) {
     weather.displayWeather();
@@ -17,6 +18,28 @@ void displayStormInfo(const Storm& storm) {
 void displayPolyMorph()
 {
 
+}
+
+size_t WriteCallback(void* contents, size_t size, size_t nmemb, void* userp) {
+    ((std::string*)userp)->append((char*)contents, size * nmemb);
+    return size * nmemb;
+}
+
+void fetchWeatherData(const std::string& url) {
+    CURL* curl = curl_easy_init();
+    std::string readBuffer;
+    if (curl) {
+        curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
+        curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
+        curl_easy_setopt(curl, CURLOPT_WRITEDATA, &readBuffer);
+        CURLcode res = curl_easy_perform(curl);
+        curl_easy_cleanup(curl);
+        if (res == CURLE_OK) {
+            std::cout << "Fetched data:\n" << readBuffer << std::endl;
+        } else {
+            std::cout << "Failed to fetch data.\n";
+        }
+    }
 }
 
 
@@ -36,6 +59,7 @@ void printMenu() {
     std::cout << "4. Display Storm information" << std::endl;
     std::cout << "6. Display Polymorphically" << std::endl;
     std::cout << "5. Exit" << std::endl;
+    std::cout << "7. Fetch live weather data" << std::endl; // <-- add this line
 }
 
 void createWeatherInstance(Weather& weather)
@@ -80,7 +104,7 @@ int main() {
     while (true) {
         printMenu();
         std::cout << " > ";
-        if (scanf("%d", &choice) == 1 && choice >= 1 && choice <= 6) {
+        if (scanf("%d", &choice) == 1 && choice >= 1 && choice <= 7) {
             if (choice == 1) {
                 Weather newWeather;
                 createWeatherInstance(newWeather);
@@ -117,6 +141,11 @@ int main() {
                 {
                     e->display(); // Calls the correct display() for Weather or Storm
                 }    
+            }
+
+            else if (choice == 7)
+            {
+                fetchWeatherData("https://wttr.in/Graz?format=3");
             }
 
             else if (choice == 5) {
